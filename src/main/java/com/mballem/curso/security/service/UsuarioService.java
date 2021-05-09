@@ -73,14 +73,24 @@ public class UsuarioService implements UserDetailsService {
 
         usuarioRepository.save(usuario);
     }
-
+    @Transactional(readOnly = true)
     public Usuario buscarPorId(Long id) {
 
         return usuarioRepository.findById(id).get();
     }
-
+    @Transactional(readOnly = true)
     public Usuario buscarPorIdEPerfis(Long usuarioId, Long[] perfisId) {
         return usuarioRepository.findByIdAndPerfis(usuarioId,perfisId)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário inexistente!"));
+    }
+
+    public static boolean isSenhaCorreta(String senhaDigitada, String senhaArmazenda){
+        return new BCryptPasswordEncoder().matches(senhaDigitada,senhaArmazenda);
+    }
+
+    @Transactional(readOnly = false)
+    public void alterarSenha(Usuario usuario, String senha){
+        usuario.setSenha(new BCryptPasswordEncoder().encode(senha));
+       usuarioRepository.save(usuario);
     }
 }
