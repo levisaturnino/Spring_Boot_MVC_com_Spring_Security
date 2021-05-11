@@ -1,10 +1,13 @@
 package com.mballem.curso.security.service;
 
+import com.mballem.curso.security.domain.Especialidade;
 import com.mballem.curso.security.domain.Medico;
 import com.mballem.curso.security.repository.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class MedicoService {
@@ -41,9 +44,11 @@ public class MedicoService {
     public void excluirEspecialidadeProMedico(Long idMed, Long idEsp) {
 
         Medico medico = medicoRepository.findById(idMed).get();
-
         medico.getEspecialidades().removeIf(e -> e.getId().equals(idEsp));
 
-     //   medicoRepository.save(medico);
+    }
+    @Transactional(readOnly = true)
+    public List<Medico> buscarMedicosPorEspecialidade(String titulo) {
+        return medicoRepository.findByMedicosPorEspecialidade(titulo);
     }
 }
