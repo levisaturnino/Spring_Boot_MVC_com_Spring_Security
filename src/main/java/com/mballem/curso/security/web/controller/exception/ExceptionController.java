@@ -16,4 +16,14 @@ public class ExceptionController {
         modelAndView.addObject("message",ex.getMessage());
         return modelAndView;
     }
+
+
+    @ExceptionHandler(AcessoNegadoException.class)
+    public ModelAndView usuarioNaoEncontradoException(AcessoNegadoException ex){
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("stauts",403);
+        modelAndView.addObject("error","Operaçao não pode ser realizada.");
+        modelAndView.addObject("message",ex.getMessage());
+        return modelAndView;
+    }
 }
